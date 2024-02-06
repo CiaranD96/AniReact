@@ -11,7 +11,6 @@ import ReviewsTab from '../../components/tabs/ReviewsTab';
 
 const Anime = () => {
   const [anime, setAnime] = useState(null);
-  const [reviews, setReviews] = useState();
   const [isloading, setIsLoading] = useState(true);
 
   const params = useParams();
