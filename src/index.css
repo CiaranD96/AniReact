@@ -1,5 +1,8 @@
 body {
   margin: 0;
+  background-color: #1f1f1f;
+  box-sizing: border-box;
+  color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -10,4 +13,215 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar {
+  background-color: #141414;
+  box-shadow: 5px 5px 10px #0b0808;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 5em;
+  width: 100%;
+  font-weight: bold;
+}
+
+.navbar-brand {
+  color: #ff0a54;
+}
+
+.navbar-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 1.5em;
+}
+
+.navbar-link:hover {
+  color: #ff0a54;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.top-anime-container,
+.seasonal-anime-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  width: 90%;
+  height: 90%;
+  justify-content: center;
+}
+
+.title {
+  color: #ff0a54;
+}
+
+.card {
+  background-color: #141414;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 5px 5px 10px #0b0808;
+  width: 30vh;
+}
+
+.card-image {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 495px;
+  width: 30vh;
+}
+
+.card-body {
+  padding: 0 0.8em;
+}
+
+.anime-rank {
+  background-color: #141414;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 2px 2px 7px #0b0808;
+  color: #ff0a54;
+  font-weight: bold;
+  font-size: 1.1em;
+  padding: 1em;
+  position: absolute;
+}
+
+.season-container {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  width: 100%;
+}
+
+select {
+  appearance: none;
+  width: 100%;
+  font-size: 1.15rem;
+  padding: 0.675em 6em 0.675em 1em;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #ff0a54;
+  color: #ff0a54;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.anime-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 90%;
+}
+
+.about-anime-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: 90%;
+  gap: 2em;
+}
+
+.about-anime-section {
+  width: 30%;
+  background-color: #141414;
+  box-shadow: 5px 5px 10px #0b0808;
+}
+
+.about-anime-main {
+  width: 70%;
+  background-color: #141414;
+  box-shadow: 5px 5px 10px #0b0808;
+}
+
+.about-anime-image {
+  width: 100%;
+}
+
+.about-anime-card-body {
+  padding: 0 1em;
+}
+
+.card-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  width: 100%;
+}
+
+.btn {
+  padding: 1em;
+  font-size: 1em;
+  font-weight: bold;
+  background-color: #1f1f1f;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: #ff0a54;
+  cursor: pointer;
+}
+
+.react-tabs__tab-list {
+  border-bottom: 1px solid #1f1f1f !important;
+}
+
+.react-tabs__tab {
+  font-weight: bold;
+  color: #ff0a54;
+}
+
+.react-tabs__tab--selected {
+  background-color: #1f1f1f !important;
+  border-color: #1f1f1f !important;
+  color: #ff0a54 !important;
+}
+
+.tab-container {
+  padding: 1em;
+}
+
+.trailer {
+  border: 0;
+  height: 50vh;
+  width: 100%;
+}
+
+.description-container {
+  margin-top: 1em;
+}
+
+.episode-tab-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.episode-card {
+  background-color: #1f1f1f;
+  padding: 0.5em 1em;
+  width: 15vw;
 }
