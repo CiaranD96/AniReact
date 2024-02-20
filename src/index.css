@@ -210,7 +210,8 @@ select {
   margin-top: 1em;
 }
 
-.episode-tab-container {
+.episode-tab-container,
+.character-tab-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -224,4 +225,36 @@ select {
   background-color: #1f1f1f;
   padding: 0.5em 1em;
   width: 15vw;
+}
+
+.character-card {
+  background-color: #1f1f1f;
+  width: 15vw;
+}
+
+.character-card-image {
+  width: 15vw;
+}
+
+.character-card-body {
+  padding: 0 1em;
+}
+
+.review-tab-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.review-card {
+  background-color: #1f1f1f;
+  padding: 0.5em 1em;
+}
+
+.review-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
