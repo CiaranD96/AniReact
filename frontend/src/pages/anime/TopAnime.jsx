@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import AnimeCard from '../../components/AnimeCard';
+import AnimeCard from '../../components/cards/AnimeCard';
 
 const TopAnime = () => {
   const [topAnime, setTopAnime] = useState(null);

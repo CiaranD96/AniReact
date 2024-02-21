@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import CharactersCard from '../CharactersCard';
+import CharactersCard from '../cards/CharactersCard';
 
 const CharactersTab = () => {
   const [characters, setCharacters] = useState(null);

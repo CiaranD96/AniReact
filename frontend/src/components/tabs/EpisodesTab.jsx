@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import EpisodeCard from '../EpisodeCard';
+import EpisodeCard from '../cards/EpisodeCard';
 
 const EpisodesTab = () => {
   const [episodes, setEpisodes] = useState([]);

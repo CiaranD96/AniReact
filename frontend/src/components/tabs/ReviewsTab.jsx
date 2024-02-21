@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import ReviewCard from '../ReviewCard';
+import ReviewCard from '../cards/ReviewCard';
 
 const ReviewsTab = () => {
   const [reviews, setReviews] = useState(null);

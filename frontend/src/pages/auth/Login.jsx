@@ -1,10 +1,36 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+
+import { loginUser, reset } from '../../redux/auth/authSlice';
+
+import Spinner from '../../components/layout/Spinner';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
 
   const { email, password } = formData;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    // redirect when user logs in
+    if (isSuccess || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, user, message, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -15,8 +41,13 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Logging in...');
+
+    const userData = { email, password };
+
+    dispatch(loginUser(userData));
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <div className='login-page-container'>
