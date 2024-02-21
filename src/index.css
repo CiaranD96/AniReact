@@ -258,3 +258,41 @@ select {
   justify-content: space-between;
   align-items: center;
 }
+
+.login-page-container,
+.register-page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #141414;
+  padding: 1.5em;
+  gap: 1.5em;
+  width: 50%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  width: 50%;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-input {
+  height: 2em;
+  border: none;
+  border-radius: 5px;
+}

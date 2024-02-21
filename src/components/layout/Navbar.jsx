@@ -15,6 +15,9 @@ const NavBar = () => {
         <Link to='/anime/seasonal' className='navbar-link'>
           Seasonal Anime
         </Link>
+        <Link to='/login' className='navbar-link'>
+          Login
+        </Link>
       </div>
     </nav>
   );
