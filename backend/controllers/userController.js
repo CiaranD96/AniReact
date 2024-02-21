@@ -67,23 +67,6 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc get current user
-// @route /api/users/me
-// @access private
-const getMe = asyncHandler(async (req, res) => {
-  // find current user
-  const user = await User.findOne({ email: req.user.email });
-  // only return required fields
-  const userObj = {
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    animeList: user.animeList,
-    createdAt: user.createdAt,
-  };
-  res.status(200).json(userObj);
-});
-
 // generate jwt token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
