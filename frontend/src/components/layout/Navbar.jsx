@@ -30,6 +30,12 @@ const NavBar = () => {
           Seasonal Anime
         </Link>
 
+        {user && (
+          <Link to='/profile' className='navbar-link'>
+            My Profile
+          </Link>
+        )}
+
         {user ? (
           <button className='btn' onClick={handleLogout}>
             Logout

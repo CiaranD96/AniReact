@@ -4,10 +4,10 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { FaRegStar, FaRegListAlt, FaRegEye, FaTrophy } from 'react-icons/fa';
 import 'react-tabs/style/react-tabs.css';
 
-import AboutTab from '../../components/tabs/AboutTab';
-import EpisodesTab from '../../components/tabs/EpisodesTab';
-import CharactersTab from '../../components/tabs/CharactersTab';
-import ReviewsTab from '../../components/tabs/ReviewsTab';
+import AboutTab from '../../components/tabs/anime/AboutTab';
+import EpisodesTab from '../../components/tabs/anime/EpisodesTab';
+import CharactersTab from '../../components/tabs/anime/CharactersTab';
+import ReviewsTab from '../../components/tabs/anime/ReviewsTab';
 
 const Anime = () => {
   const [anime, setAnime] = useState(null);

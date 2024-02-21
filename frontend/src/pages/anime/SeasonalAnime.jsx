@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import AnimeCard from '../../components/cards/AnimeCard';
+import Spinner from '../../components/layout/Spinner';
 
 const SeasonalAnime = () => {
   const [seasonalAnime, setSeasonalAnime] = useState(null);
@@ -55,7 +56,7 @@ const SeasonalAnime = () => {
     setYear(parseInt(e.target.value));
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Spinner />;
 
   return (
     <>

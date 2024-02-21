@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import AnimeCard from '../../components/cards/AnimeCard';
+import Spinner from '../../components/layout/Spinner';
 
 const TopAnime = () => {
   const [topAnime, setTopAnime] = useState(null);
@@ -25,7 +26,7 @@ const TopAnime = () => {
     getTopAnime();
   }, [pageNumber]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
