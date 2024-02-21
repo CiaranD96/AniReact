@@ -35,6 +35,8 @@ const userSchema = mongoose.Schema(
             'dropped',
           ],
           image_url: { type: String, required: true },
+          timestamp: { type: Date, required: true },
+          favourite: { type: Boolean, required: false, default: false },
         },
       },
     ],

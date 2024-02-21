@@ -34,6 +34,8 @@ const Anime = () => {
     getAnime();
   }, [params.animeId]);
 
+  console.log(anime);
+
   if (isloading) return <div>Loading...</div>;
 
   return (

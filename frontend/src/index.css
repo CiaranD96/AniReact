@@ -321,6 +321,26 @@ select {
   width: 70%;
 }
 
+.watch-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.watch-list-card {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2em;
+  background-color: #1f1f1f;
+  padding: 1em;
+  height: 15vh;
+}
+
+.watch-list-image {
+  height: 15vh;
+}
+
 .loadingSpinnerContainer {
   position: fixed;
   top: 0;

@@ -3,13 +3,24 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import 'react-tabs/style/react-tabs.css';
 
-import Completed from '../components/tabs/profile/Completed';
-import Favourites from '../components/tabs/profile/Favourites';
-import PlanToWatch from '../components/tabs/profile/PlanToWatch';
-import Watching from '../components/tabs/profile/Watching';
+import WatchList from '../components/tabs/profile/WatchList';
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
+
+  const getList = (status) => {
+    const list = user.animeList;
+    const filteredList = list.filter((anime) => anime.status === status);
+
+    return filteredList;
+  };
+
+  const getFavourites = () => {
+    const list = user.animeList;
+    const favourites = list.filter((anime) => anime.favourite);
+
+    return favourites;
+  };
 
   return (
     <div className='profile-page-container'>
@@ -31,19 +42,19 @@ const Profile = () => {
           </TabList>
 
           <TabPanel>
-            <PlanToWatch />
+            <WatchList list={getList('plan to watch')} />
           </TabPanel>
 
           <TabPanel>
-            <Watching />
+            <WatchList list={getList('watching')} />
           </TabPanel>
 
           <TabPanel>
-            <Completed />
+            <WatchList list={getList('completed')} />
           </TabPanel>
 
           <TabPanel>
-            <Favourites />
+            <WatchList list={getFavourites()} />
           </TabPanel>
         </Tabs>
       </main>
