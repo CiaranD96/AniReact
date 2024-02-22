@@ -12,7 +12,7 @@ const initialState = {
   message: '',
 };
 
-// register user
+// register new user
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (user, thunkAPI) => {
@@ -78,8 +78,9 @@ export const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.isError = false;
+        state.isError = true;
         state.message = action.payload;
+        state.user = null;
       })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
