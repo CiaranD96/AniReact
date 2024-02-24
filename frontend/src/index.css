@@ -178,7 +178,13 @@ select {
 
 .btn:hover {
   background-color: #ff0a54;
+  color: #fff;
   cursor: pointer;
+}
+
+.btn-favourite-checked {
+  background-color: #0aff64;
+  color: #000;
 }
 
 .react-tabs__tab-list {

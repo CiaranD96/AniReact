@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { FaRegStar, FaRegListAlt, FaRegEye, FaTrophy } from 'react-icons/fa';
 import 'react-tabs/style/react-tabs.css';
@@ -12,6 +13,7 @@ import ReviewsTab from '../../components/tabs/anime/ReviewsTab';
 const Anime = () => {
   const [anime, setAnime] = useState(null);
   const [isloading, setIsLoading] = useState(true);
+  const { user } = useSelector((state) => state.auth);
 
   const params = useParams();
 
@@ -34,7 +36,12 @@ const Anime = () => {
     getAnime();
   }, [params.animeId]);
 
-  console.log(anime);
+  function isFavourite() {
+    const animeId = params.animeId;
+    const list = user.favouriteAnime;
+    const checkList = list.find((anime) => anime.mal_id === parseInt(animeId));
+    return checkList;
+  }
 
   if (isloading) return <div>Loading...</div>;
 
@@ -56,7 +63,11 @@ const Anime = () => {
                 {anime.year && ` - ${anime.year}`}
               </h2>
               <div className='card-button-container'>
-                <button className='btn btn-favourite'>
+                <button
+                  className={`btn btn-favourite ${
+                    isFavourite() ? 'btn-favourite-checked' : ''
+                  }`}
+                >
                   <FaRegStar /> Favourite
                 </button>
                 <button className='btn btn-planning'>
