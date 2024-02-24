@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { toast } from 'react-toastify';
 import { FaRegStar, FaRegListAlt, FaRegEye, FaTrophy } from 'react-icons/fa';
 import 'react-tabs/style/react-tabs.css';
+
+import { addAnimeToFavourites, reset } from '../../redux/auth/authSlice';
 
 import AboutTab from '../../components/tabs/anime/AboutTab';
 import EpisodesTab from '../../components/tabs/anime/EpisodesTab';
@@ -13,9 +16,12 @@ import ReviewsTab from '../../components/tabs/anime/ReviewsTab';
 const Anime = () => {
   const [anime, setAnime] = useState(null);
   const [isloading, setIsLoading] = useState(true);
-  const { user } = useSelector((state) => state.auth);
+  const { user, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
   const params = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getAnime = async () => {
@@ -36,12 +42,37 @@ const Anime = () => {
     getAnime();
   }, [params.animeId]);
 
-  function isFavourite() {
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      toast.success('Anime added to favourites');
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, dispatch, message]);
+
+  const isFavourite = () => {
     const animeId = params.animeId;
     const list = user.favouriteAnime;
     const checkList = list.find((anime) => anime.mal_id === parseInt(animeId));
     return checkList;
-  }
+  };
+
+  const handleFavouriteClick = () => {
+    if (isFavourite()) {
+      console.log('removing from favourites...');
+    } else {
+      const newFavourite = {
+        mal_id: anime.mal_id,
+        name: anime.title_english,
+        image_url: anime.images.webp.large_image_url,
+      };
+      dispatch(addAnimeToFavourites(newFavourite));
+    }
+  };
 
   if (isloading) return <div>Loading...</div>;
 
@@ -67,6 +98,7 @@ const Anime = () => {
                   className={`btn btn-favourite ${
                     isFavourite() ? 'btn-favourite-checked' : ''
                   }`}
+                  onClick={handleFavouriteClick}
                 >
                   <FaRegStar /> Favourite
                 </button>

@@ -1,7 +1,6 @@
 import WatchListCard from '../../cards/WatchListCard';
 
 const WatchList = ({ list }) => {
-  console.log(list);
   return (
     <section className='watch-list-container'>
       {list.length > 0

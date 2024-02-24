@@ -75,7 +75,6 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route PUT /api/users/list
 // @access private
 const updateList = asyncHandler(async (req, res) => {
-  // get user using the id in jwt
   const user = await User.findById(req.user.id);
 
   if (!user) {
@@ -96,6 +95,45 @@ const updateList = asyncHandler(async (req, res) => {
   res.status(200).json('hello world');
 });
 
+// @desc add an anime to user favourites list
+// @desc PUT /api/users/favourites/add
+// @access private
+const addToFavourites = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+  const { mal_id, name, image_url } = req.body;
+
+  if (!user) {
+    res.status(401);
+    throw new Error('User not found');
+  }
+
+  // check if anime already exists in array
+  const currentFavourites = user.favouriteAnime;
+  const isFavourite = currentFavourites.find(
+    (anime) => anime.mal_id === parseInt(mal_id)
+  );
+
+  if (isFavourite) {
+    res.status(400);
+    throw new Error('Anime already added to favourites');
+  } else {
+    const newFavouriteAnime = {
+      mal_id,
+      name,
+      image_url,
+      timestamp: new Date(),
+    };
+
+    await User.findByIdAndUpdate(req.user.id, {
+      $push: { favouriteAnime: newFavouriteAnime },
+    });
+
+    const updatedFavourites = await User.findById(req.user.id);
+
+    res.status(200).json(updatedFavourites.favouriteAnime);
+  }
+});
+
 // generate jwt token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -107,4 +145,5 @@ module.exports = {
   registerUser,
   loginUser,
   updateList,
+  addToFavourites,
 };

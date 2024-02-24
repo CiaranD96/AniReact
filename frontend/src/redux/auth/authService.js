@@ -27,10 +27,27 @@ const logout = () => {
   localStorage.removeItem('user');
 };
 
+// add an anime to favourites list
+const addToFavourites = async (favourite, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.put(
+    '/api/users/favourites/add',
+    favourite,
+    config
+  );
+
+  return response.data;
+};
+
 const authService = {
   register,
   login,
   logout,
+  addToFavourites,
 };
 
 export default authService;
