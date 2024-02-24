@@ -36,6 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       animeList: user.animeList,
+      favouriteAnime: user.favouriteAnime,
       createdAt: user.createdAt,
       token: generateToken(user._id),
     });
@@ -60,6 +61,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       animeList: user.animeList,
+      favouriteAnime: user.favouriteAnime,
       createdAt: user.createdAt,
       token: generateToken(user._id),
     });
@@ -67,6 +69,31 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error('Invalid credentials');
   }
+});
+
+// @desc update an anime in the users animeList field in the database
+// @route PUT /api/users/list
+// @access private
+const updateList = asyncHandler(async (req, res) => {
+  // get user using the id in jwt
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error('User not found');
+  }
+
+  // set anime object in anime list
+  const { mal_id, name, status, image_url } = req.body;
+
+  if ((!mal_id || !name || !status, !image_url)) {
+    res.status(400);
+    throw new Error('Anime information required');
+  }
+
+  console.log(mal_id, name, status, image_url);
+
+  res.status(200).json('hello world');
 });
 
 // generate jwt token
@@ -79,4 +106,5 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   loginUser,
+  updateList,
 };

@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema(
     },
     animeList: [
       {
-        mal_id: { type: Number, required: true },
+        mal_id: { type: Number, required: true, unique: true },
         name: { type: String, required: true },
         status: {
           type: String,
@@ -36,8 +36,15 @@ const userSchema = mongoose.Schema(
           ],
           image_url: { type: String, required: true },
           timestamp: { type: Date, required: true },
-          favourite: { type: Boolean, required: false, default: false },
         },
+      },
+    ],
+    favouriteAnime: [
+      {
+        mal_id: { type: Number, required: true, unique: true },
+        name: { type: String, required: true },
+        image_url: { type: String, required: true },
+        timestamp: { type: Date, required: true },
       },
     ],
   },

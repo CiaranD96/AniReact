@@ -16,10 +16,9 @@ const Profile = () => {
   };
 
   const getFavourites = () => {
-    const list = user.animeList;
-    const favourites = list.filter((anime) => anime.favourite);
+    const list = user.favouriteAnime;
 
-    return favourites;
+    return list;
   };
 
   return (
