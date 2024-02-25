@@ -8,9 +8,10 @@ import 'react-tabs/style/react-tabs.css';
 
 import {
   addAnimeToFavourites,
+  getAnimeFavourites,
   removeAnimeFromFavourites,
   reset,
-} from '../../redux/auth/authSlice';
+} from '../../redux/favourites/favouritesSlice';
 
 import AboutTab from '../../components/tabs/anime/AboutTab';
 import EpisodesTab from '../../components/tabs/anime/EpisodesTab';
@@ -20,8 +21,8 @@ import ReviewsTab from '../../components/tabs/anime/ReviewsTab';
 const Anime = () => {
   const [anime, setAnime] = useState(null);
   const [isloading, setIsLoading] = useState(true);
-  const { user, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
+  const { favouriteAnime, isError, isSuccess, message } = useSelector(
+    (state) => state.favourites
   );
 
   const params = useParams();
@@ -47,6 +48,13 @@ const Anime = () => {
   }, [params.animeId]);
 
   useEffect(() => {
+    const getFavourites = async () => {
+      dispatch(getAnimeFavourites());
+    };
+    getFavourites();
+  }, [dispatch]);
+
+  useEffect(() => {
     if (isError) {
       toast.error(message);
     }
@@ -60,7 +68,7 @@ const Anime = () => {
 
   const isFavourite = () => {
     const animeId = params.animeId;
-    const list = user.favouriteAnime;
+    const list = favouriteAnime;
     const checkList = list.find((anime) => anime.mal_id === parseInt(animeId));
     return checkList;
   };

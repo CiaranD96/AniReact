@@ -1,5 +1,7 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { getAnimeFavourites } from '../redux/favourites/favouritesSlice';
 
 import 'react-tabs/style/react-tabs.css';
 
@@ -7,16 +9,24 @@ import WatchList from '../components/tabs/profile/WatchList';
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
+  const { favouriteAnime } = useSelector((state) => state.favourites);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAnimeFavourites());
+  }, [dispatch]);
 
   const getList = (status) => {
-    const list = user.animeList;
-    const filteredList = list.filter((anime) => anime.status === status);
+    // const list = user.animeList;
+    // const filteredList = list.filter((anime) => anime.status === status);
 
-    return filteredList;
+    // return filteredList;
+    return [];
   };
 
   const getFavourites = () => {
-    const list = user.favouriteAnime;
+    const list = favouriteAnime;
 
     return list;
   };

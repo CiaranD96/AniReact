@@ -35,8 +35,6 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      animeList: user.animeList,
-      favouriteAnime: user.favouriteAnime,
       createdAt: user.createdAt,
       token: generateToken(user._id),
     });
@@ -60,8 +58,6 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      animeList: user.animeList,
-      favouriteAnime: user.favouriteAnime,
       createdAt: user.createdAt,
       token: generateToken(user._id),
     });
@@ -95,63 +91,6 @@ const updateList = asyncHandler(async (req, res) => {
   res.status(200).json('hello world');
 });
 
-// @desc add an anime to user favourites list
-// @desc PUT /api/users/favourites/add
-// @access private
-const addToFavourites = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
-  const { mal_id, name, image_url } = req.body;
-
-  if (!user) {
-    res.status(401);
-    throw new Error('User not found');
-  }
-
-  // check if anime already exists in array
-  const currentFavourites = user.favouriteAnime;
-  const isFavourite = currentFavourites.find(
-    (anime) => anime.mal_id === parseInt(mal_id)
-  );
-
-  if (isFavourite) {
-    res.status(400);
-    throw new Error('Anime already added to favourites');
-  } else {
-    const newFavouriteAnime = {
-      mal_id,
-      name,
-      image_url,
-      timestamp: new Date(),
-    };
-
-    await User.findByIdAndUpdate(req.user.id, {
-      $push: { favouriteAnime: newFavouriteAnime },
-    });
-
-    const updatedFavourites = await User.findById(req.user.id);
-
-    res.status(200).json(updatedFavourites.favouriteAnime);
-  }
-});
-
-const deleteFromFavourites = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id);
-  const { mal_id } = req.body;
-
-  if (!user) {
-    res.status(401);
-    throw new Error('User not found');
-  }
-
-  await User.findByIdAndUpdate(req.user.id, {
-    $pull: { favouriteAnime: { mal_id } },
-  });
-
-  const updatedFavourites = await User.findById(req.user.id);
-
-  res.status(200).json(updatedFavourites.favouriteAnime);
-});
-
 // generate jwt token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -163,6 +102,4 @@ module.exports = {
   registerUser,
   loginUser,
   updateList,
-  addToFavourites,
-  deleteFromFavourites,
 };
