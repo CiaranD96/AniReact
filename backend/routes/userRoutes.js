@@ -5,7 +5,7 @@ const {
   loginUser,
   updateList,
   addToFavourites,
-  // deleteFromFavourites,
+  deleteFromFavourites,
 } = require('../controllers/userController');
 
 const { protect } = require('../middleware/authMiddleware');
@@ -18,6 +18,6 @@ router.put('/list', protect, updateList);
 
 router.put('/favourites/add', protect, addToFavourites);
 
-// router.put('/favourites/delete', protect, deleteFromFavourites);
+router.put('/favourites/delete', protect, deleteFromFavourites);
 
 module.exports = router;

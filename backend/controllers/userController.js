@@ -134,6 +134,24 @@ const addToFavourites = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteFromFavourites = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+  const { mal_id } = req.body;
+
+  if (!user) {
+    res.status(401);
+    throw new Error('User not found');
+  }
+
+  await User.findByIdAndUpdate(req.user.id, {
+    $pull: { favouriteAnime: { mal_id } },
+  });
+
+  const updatedFavourites = await User.findById(req.user.id);
+
+  res.status(200).json(updatedFavourites.favouriteAnime);
+});
+
 // generate jwt token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -146,4 +164,5 @@ module.exports = {
   loginUser,
   updateList,
   addToFavourites,
+  deleteFromFavourites,
 };

@@ -75,6 +75,26 @@ export const addAnimeToFavourites = createAsyncThunk(
   }
 );
 
+// remove anime from favourites list
+export const removeAnimeFromFavourites = createAsyncThunk(
+  'auth/favourites-delete',
+  async (mal_id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await authService.removeFromFavoutires(mal_id, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -126,8 +146,23 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.user.favouriteAnime = action.payload;
+        state.message = 'Anime added to favourites';
       })
       .addCase(addAnimeToFavourites.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(removeAnimeFromFavourites.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(removeAnimeFromFavourites.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user.favouriteAnime = action.payload;
+        state.message = 'Anime removed from favourites';
+      })
+      .addCase(removeAnimeFromFavourites.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

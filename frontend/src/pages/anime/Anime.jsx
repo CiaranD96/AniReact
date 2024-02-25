@@ -6,7 +6,11 @@ import { toast } from 'react-toastify';
 import { FaRegStar, FaRegListAlt, FaRegEye, FaTrophy } from 'react-icons/fa';
 import 'react-tabs/style/react-tabs.css';
 
-import { addAnimeToFavourites, reset } from '../../redux/auth/authSlice';
+import {
+  addAnimeToFavourites,
+  removeAnimeFromFavourites,
+  reset,
+} from '../../redux/auth/authSlice';
 
 import AboutTab from '../../components/tabs/anime/AboutTab';
 import EpisodesTab from '../../components/tabs/anime/EpisodesTab';
@@ -48,7 +52,7 @@ const Anime = () => {
     }
 
     if (isSuccess) {
-      toast.success('Anime added to favourites');
+      toast.success(message);
     }
 
     dispatch(reset());
@@ -63,7 +67,8 @@ const Anime = () => {
 
   const handleFavouriteClick = () => {
     if (isFavourite()) {
-      console.log('removing from favourites...');
+      const mal_id = anime.mal_id;
+      dispatch(removeAnimeFromFavourites(mal_id));
     } else {
       const newFavourite = {
         mal_id: anime.mal_id,
