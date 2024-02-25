@@ -50,10 +50,7 @@ const Anime = () => {
 
   useEffect(() => {
     if (user) {
-      const getFavourites = async () => {
-        dispatch(getAnimeFavourites());
-      };
-      getFavourites();
+      dispatch(getAnimeFavourites());
     }
   }, [dispatch, user]);
 
