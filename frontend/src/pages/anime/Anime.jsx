@@ -21,6 +21,7 @@ import ReviewsTab from '../../components/tabs/anime/ReviewsTab';
 const Anime = () => {
   const [anime, setAnime] = useState(null);
   const [isloading, setIsLoading] = useState(true);
+  const { user } = useSelector((state) => state.auth);
   const { favouriteAnime, isError, isSuccess, message } = useSelector(
     (state) => state.favourites
   );
@@ -48,11 +49,13 @@ const Anime = () => {
   }, [params.animeId]);
 
   useEffect(() => {
-    const getFavourites = async () => {
-      dispatch(getAnimeFavourites());
-    };
-    getFavourites();
-  }, [dispatch]);
+    if (user) {
+      const getFavourites = async () => {
+        dispatch(getAnimeFavourites());
+      };
+      getFavourites();
+    }
+  }, [dispatch, user]);
 
   useEffect(() => {
     if (isError) {
@@ -74,16 +77,20 @@ const Anime = () => {
   };
 
   const handleFavouriteClick = () => {
-    if (isFavourite()) {
-      const mal_id = anime.mal_id;
-      dispatch(removeAnimeFromFavourites(mal_id));
+    if (user) {
+      if (isFavourite()) {
+        const mal_id = anime.mal_id;
+        dispatch(removeAnimeFromFavourites(mal_id));
+      } else {
+        const newFavourite = {
+          mal_id: anime.mal_id,
+          name: anime.title_english,
+          image_url: anime.images.webp.large_image_url,
+        };
+        dispatch(addAnimeToFavourites(newFavourite));
+      }
     } else {
-      const newFavourite = {
-        mal_id: anime.mal_id,
-        name: anime.title_english,
-        image_url: anime.images.webp.large_image_url,
-      };
-      dispatch(addAnimeToFavourites(newFavourite));
+      toast.error('Please log in to add to favourites');
     }
   };
 

@@ -26,13 +26,6 @@ const addToFavourites = async (favourite, token) => {
     config
   );
 
-  // if (response.data) {
-  //   const user = JSON.parse(localStorage.getItem('user'));
-  //   const updatedFavourites = response.data;
-  //   user.favouriteAnime = updatedFavourites;
-  //   localStorage.setItem('user', JSON.stringify(user));
-  // }
-
   return response.data;
 };
 
@@ -49,13 +42,6 @@ const removeFromFavoutires = async (mal_id, token) => {
     { mal_id },
     config
   );
-
-  // if (response.data) {
-  //   const user = JSON.parse(localStorage.getItem('user'));
-  //   const updatedFavourites = response.data;
-  //   user.favouriteAnime = updatedFavourites;
-  //   localStorage.setItem('user', JSON.stringify(user));
-  // }
 
   return response.data;
 };
