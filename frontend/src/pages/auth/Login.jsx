@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { loginUser, reset } from '../../redux/auth/authSlice';
-import { getAnimeFavourites } from '../../redux/favourites/favouritesSlice';
 
 import Spinner from '../../components/layout/Spinner';
 
@@ -27,7 +26,6 @@ const Login = () => {
 
     // redirect when user logs in
     if (isSuccess || user) {
-      dispatch(getAnimeFavourites());
       navigate('/');
     }
 
