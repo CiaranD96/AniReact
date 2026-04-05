@@ -1,158 +1,120 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { toast } from 'react-toastify';
-import { FaRegStar, FaRegListAlt, FaRegEye, FaTrophy } from 'react-icons/fa';
-import 'react-tabs/style/react-tabs.css';
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { toast } from "react-toastify";
+import "react-tabs/style/react-tabs.css";
 
-import {
-  addAnimeToFavourites,
-  getAnimeFavourites,
-  removeAnimeFromFavourites,
-  reset,
-} from '../../redux/favourites/favouritesSlice';
+import { useAnimeData } from "../../hooks/useAnimeData";
+import { useFavourites } from "../../hooks/useFavourites";
+import { useWatchList } from "../../hooks/useWatchList";
 
-import AboutTab from '../../components/tabs/anime/AboutTab';
-import EpisodesTab from '../../components/tabs/anime/EpisodesTab';
-import CharactersTab from '../../components/tabs/anime/CharactersTab';
-import ReviewsTab from '../../components/tabs/anime/ReviewsTab';
+import AboutTab from "../../components/tabs/anime/AboutTab";
+import EpisodesTab from "../../components/tabs/anime/EpisodesTab";
+import CharactersTab from "../../components/tabs/anime/CharactersTab";
+import ReviewsTab from "../../components/tabs/anime/ReviewsTab";
+import AnimeInfoSection from "../../components/tabs/anime/AnimeInfoSection";
 
 const Anime = () => {
-  const [anime, setAnime] = useState(null);
-  const [isloading, setIsLoading] = useState(true);
+  const { animeId } = useParams();
   const { user } = useSelector((state) => state.auth);
-  const { favouriteAnime, isError, isSuccess, message } = useSelector(
-    (state) => state.favourites
-  );
 
-  const params = useParams();
-  const dispatch = useDispatch();
+  // Data fetching
+  const { anime, isLoading } = useAnimeData(animeId);
 
-  useEffect(() => {
-    const getAnime = async () => {
-      try {
-        const response = await fetch(
-          `https://api.jikan.moe/v4/anime/${params.animeId}/full`
-        );
-        const anime = await response.json();
+  // Favorites logic
+  const {
+    isFavourite: checkIsFavourite,
+    toggleFavourite,
+    initializeFavourites,
+    resetState: resetFavouritesState,
+    isError: favIsError,
+    isSuccess: favIsSuccess,
+    message: favMessage,
+  } = useFavourites();
 
-        setAnime(anime.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setIsLoading(false);
-      }
-    };
+  // Watch list logic
+  const {
+    isInWatchList: checkIsInWatchList,
+    addToList,
+    initializeWatchList,
+    resetState: resetWatchListState,
+    isError: watchIsError,
+    isSuccess: watchIsSuccess,
+    message: watchMessage,
+  } = useWatchList();
 
-    getAnime();
-  }, [params.animeId]);
-
+  // Initialize data on mount/user change
   useEffect(() => {
     if (user) {
-      dispatch(getAnimeFavourites());
+      initializeFavourites();
+      initializeWatchList();
     }
-  }, [dispatch, user]);
+  }, [user]);
 
+  // Handle toast notifications for favorites
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
+    if (favIsError) {
+      toast.error(favMessage);
+      resetFavouritesState();
     }
-
-    if (isSuccess) {
-      toast.success(message);
+    if (favIsSuccess) {
+      toast.success(favMessage);
+      resetFavouritesState();
     }
+  }, [favIsError, favIsSuccess]);
 
-    dispatch(reset());
-  }, [isError, isSuccess, dispatch, message]);
+  // Handle toast notifications for watch list
+  useEffect(() => {
+    if (watchIsError) {
+      toast.error(watchMessage);
+      resetWatchListState();
+    }
+    if (watchIsSuccess) {
+      toast.success(watchMessage);
+      resetWatchListState();
+    }
+  }, [watchIsError, watchIsSuccess]);
 
-  const isFavourite = () => {
-    const animeId = params.animeId;
-    const list = favouriteAnime;
-    const checkList = list.find((anime) => anime.mal_id === parseInt(animeId));
-    return checkList;
-  };
-
+  // Handlers
   const handleFavouriteClick = () => {
-    if (user) {
-      if (isFavourite()) {
-        const mal_id = anime.mal_id;
-        dispatch(removeAnimeFromFavourites(mal_id));
-      } else {
-        const newFavourite = {
-          mal_id: anime.mal_id,
-          name: anime.title_english,
-          image_url: anime.images.webp.large_image_url,
-        };
-        dispatch(addAnimeToFavourites(newFavourite));
-      }
-    } else {
-      toast.error('Please log in to add to favourites');
+    if (!user) {
+      toast.error("Please log in to add to favourites");
+      return;
     }
+    toggleFavourite(anime);
   };
 
-  if (isloading) return <div>Loading...</div>;
+  const handleAddToList = (status) => {
+    if (!user) {
+      toast.error("Please log in to add to list");
+      return;
+    }
+    addToList(anime, status);
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!anime) return <div>Anime not found</div>;
+
+  const isFavourite = checkIsFavourite(animeId);
+  const isInWatchList = checkIsInWatchList(animeId);
 
   return (
-    <div className='anime-page-container'>
-      <div className='about-anime-container'>
-        <section className='about-anime-section'>
-          <div className='about-anime-card'>
-            <div className='about-anime-card-container'>
-              <img
-                src={anime.images.webp.large_image_url}
-                alt={anime.title_english ?? anime.title_japanese}
-                className='about-anime-image'
-              />
-            </div>
-            <div className='about-anime-card-body'>
-              <h2 className='title'>
-                {anime.title_english ?? anime.title_japanese}{' '}
-                {anime.year && ` - ${anime.year}`}
-              </h2>
-              <div className='card-button-container'>
-                <button
-                  className={`btn btn-favourite ${
-                    isFavourite() ? 'btn-favourite-checked' : ''
-                  }`}
-                  onClick={handleFavouriteClick}
-                >
-                  <FaRegStar /> Favourite
-                </button>
-                <button className='btn btn-planning'>
-                  <FaRegListAlt /> Plan To Watch
-                </button>
-                <button className='btn btn-watching'>
-                  <FaRegEye /> Watching
-                </button>
-                <button className='btn btn-completed'>
-                  <FaTrophy /> Completed
-                </button>
-              </div>
-              <p>
-                Score: {anime.score} ({anime.scored_by} votes)
-              </p>
-              <p>
-                Studio:{' '}
-                {anime.studios.length > 0 ? anime.studios[0].name : 'Unknown'}
-              </p>
-              <p>
-                Aired: {anime.aired.string} - {anime.status}
-              </p>
-              <p>
-                Type: {anime.type} ({anime.episodes} episodes)
-              </p>
-              <p>Source: {anime.source}</p>
-              <p>Rating: {anime.rating}</p>
-            </div>
-          </div>
-        </section>
+    <div className="anime-page-container">
+      <div className="about-anime-container">
+        <AnimeInfoSection
+          anime={anime}
+          isFavourite={!!isFavourite}
+          isInWatchList={isInWatchList}
+          onFavouriteClick={handleFavouriteClick}
+          onAddToList={handleAddToList}
+        />
 
-        <main className='about-anime-main'>
+        <main className="about-anime-main">
           <Tabs>
             <TabList>
               <Tab>About</Tab>
-              {anime.type === 'TV' && <Tab>Episodes</Tab>}
+              {anime.type === "TV" && <Tab>Episodes</Tab>}
               <Tab>Characters</Tab>
               <Tab>Reviews</Tab>
             </TabList>
@@ -163,7 +125,7 @@ const Anime = () => {
                 trailer={anime.trailer.embed_url}
               />
             </TabPanel>
-            {anime.type === 'TV' && (
+            {anime.type === "TV" && (
               <TabPanel>
                 <EpisodesTab />
               </TabPanel>

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import CharactersCard from '../../cards/CharactersCard';
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import CharactersCard from "../../cards/CharactersCard";
 
 const CharactersTab = () => {
   const [characters, setCharacters] = useState(null);
@@ -12,14 +12,13 @@ const CharactersTab = () => {
     const getCharacters = async () => {
       try {
         const response = await fetch(
-          `https://api.jikan.moe/v4/anime/${params.animeId}/characters`
+          `https://api.jikan.moe/v4/anime/${params.animeId}/characters`,
         );
         const data = await response.json();
 
         setCharacters(data.data);
         setIsLoading(false);
       } catch (error) {
-        console.log(error);
         setIsLoading(false);
       }
     };
@@ -30,7 +29,7 @@ const CharactersTab = () => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className='tab-container character-tab-container'>
+    <div className="tab-container character-tab-container">
       {characters.map((character) => (
         <CharactersCard
           key={character.character.mal_id}
